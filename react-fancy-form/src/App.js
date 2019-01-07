@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import FancyForm from './fancy-form';
 
 class InputSettings {
-  constructor(label, validators, listData = [], needsSlot = false) {
+  constructor(label, validators, listData = [], needsSlot = false, component = 'input', componentProps = {}) {
     this.label = label;
     this.validators = validators;
     this.listData = listData;
     this.needsSlot = needsSlot;
+    this.component = component;
+    this.componentProps = componentProps;
   }
 }
 
@@ -18,6 +20,14 @@ class App extends Component {
       username: new InputSettings('Username', { required: true, minLength: 3, maxLength: 25 }, [], true ),
       email: new InputSettings('Email Adress', { required: true, minLength: 3, maxLength: 25 } ),
       password: new InputSettings('Password', { required: true, minLength: 3, maxLength: 25 } ),
+      repeatedPassword: new InputSettings('Repeated Password', { required: true, minLength: 3, maxLength: 25 } ),
+      firstName: new InputSettings('First Name', { required: true, minLength: 3, maxLength: 25 } ),
+      lastName: new InputSettings('Last Name', { required: true, minLength: 3, maxLength: 25 } ),
+    },
+    settingsAdvanced: {
+      username: new InputSettings('Username', { required: true, minLength: 3, maxLength: 25 }, [], true ),
+      email: new InputSettings('Email Adress', { required: true, minLength: 3, maxLength: 25 } ),
+      password: new InputSettings('Password', { required: true, minLength: 3, maxLength: 25 }, ['agniecha', 'tomasz', 'piotr'], false, 'select'),
       repeatedPassword: new InputSettings('Repeated Password', { required: true, minLength: 3, maxLength: 25 } ),
       firstName: new InputSettings('First Name', { required: true, minLength: 3, maxLength: 25 } ),
       lastName: new InputSettings('Last Name', { required: true, minLength: 3, maxLength: 25 } ),
@@ -39,7 +49,7 @@ class App extends Component {
   }
 
   render() {
-    const { initialValues, settings, isLoading } = this.state;
+    const { initialValues, settings, isLoading, settingsAdvanced } = this.state;
     return (
       <div className="App">
         {/* Fancy form z wykorzystaniem render propa - pozwala na tworzenie w bardziej dynamiczny sposob - uzywac tylko w zlozonych formularzach */}
@@ -85,7 +95,7 @@ class App extends Component {
           key={2}
           onSubmit={this.handleSubmit}
           initialValues={initialValues} 
-          settings={settings} 
+          settings={settingsAdvanced} 
         />
 
         <FancyForm

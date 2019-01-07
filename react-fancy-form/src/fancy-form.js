@@ -1,6 +1,7 @@
 import React from 'react';
 import { validatorsFunctions, checkFormContainErrors, createSlotFunctionsNames } from './form-index';
-
+import Input from './input';
+import Select from './select';
 class FancyForm extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -78,6 +79,15 @@ class FancyForm extends React.PureComponent {
         });
     }
 
+    renderComponent = (settings, props) => {
+        switch(settings.component) {
+            case 'select':
+                return <Select {...settings.componentProps} {...props} listData={settings.listData} />;
+            default:
+                return <Input {...settings.componentProps} {...props} />;
+        }
+    }
+
     render() {
         const { formKeys, values, errors, isFormInvalid, isFormDirty, settings } = this.state;
         return (
@@ -92,8 +102,10 @@ class FancyForm extends React.PureComponent {
                             return (
                                 <section key={key}>
                                     <label>{settings[key].label}</label>
-                                    <input type="text" value={values[key]}
-                                        onChange={e => this.handleChange(e, key)}/>
+
+                                    {this.renderComponent(settings[key], {
+                                        value: values[key], onChange: e => this.handleChange(e, key)
+                                    })}
 
                                     {errors[key] && <p style={{color: 'red'}}>{errors[key]}</p>}
                                 </section>
