@@ -2,6 +2,7 @@ import React from 'react';
 import { validatorsFunctions, checkFormContainErrors, createSlotFunctionsNames } from './form-index';
 import Input from './input';
 import Select from './select';
+
 class FancyForm extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -90,32 +91,36 @@ class FancyForm extends React.PureComponent {
 
     render() {
         const { formKeys, values, errors, isFormInvalid, isFormDirty, settings } = this.state;
+        const { formClass, renderForm, btnClass, btnTitle, renderSubmitBtn } = this.props;
         return (
             <React.Fragment>
-                {this.props.renderForm ? this.props.renderForm(formKeys, values, errors, isFormInvalid, isFormDirty, this.handleChange, this.handleSubmit) :
-                <form onSubmit={this.handleSubmit}>
+                {renderForm ? renderForm(formKeys, values, errors, isFormInvalid, isFormDirty, this.handleChange, this.handleSubmit) :
+                <form className={formClass} onSubmit={this.handleSubmit}>
                     {formKeys.map(key => {
                         if (settings[key].needsSlot && this.props[this.slots[key]])
                             return this.props[this.slots[key]](key, values[key], errors[key], this.handleChange, this.handleSubmit);
                         
                         else {
                             return (
-                                <section key={key}>
-                                    <label>{settings[key].label}</label>
+                                <section className="fields-wrapper" key={key}>
+                                    <label className="field-label">{settings[key].label}</label>
 
                                     {this.renderComponent(settings[key], {
                                         value: values[key], onChange: e => this.handleChange(e, key)
                                     })}
 
-                                    {errors[key] && <p style={{color: 'red'}}>{errors[key]}</p>}
+                                    <p className="field-error">{errors[key]}</p>
                                 </section>
                             );
                         }
                     })}
 
-                    <button type="submit" disabled={isFormInvalid}>
-                        Submit
-                    </button>
+                    {renderSubmitBtn ? renderSubmitBtn(this.handleSubmit) : 
+                        <button className={btnClass} type="submit" disabled={isFormInvalid}>
+                            {btnTitle}
+                        </button>  
+                    }
+                   
                 </form>
                 }
             </React.Fragment>
@@ -123,5 +128,11 @@ class FancyForm extends React.PureComponent {
         
     }
 }
+
+FancyForm.defaultProps = {
+    formClass: 'form',
+    btnClass: 'label-btn',
+    btnTitle: 'submit'
+};
 
 export default FancyForm;

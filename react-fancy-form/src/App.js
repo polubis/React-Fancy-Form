@@ -2,35 +2,37 @@ import React, { Component } from 'react';
 import FancyForm from './fancy-form';
 
 class InputSettings {
-  constructor(label, validators, listData = [], needsSlot = false, component = 'input', componentProps = {}) {
+  constructor(label, validators, listData = [], needsSlot = false, component = 'input', componentProps = {className: 'field'}) {
     this.label = label;
     this.validators = validators;
     this.listData = listData;
     this.needsSlot = needsSlot;
     this.component = component;
+    componentProps.placeholder = `type your ${label}...`;
     this.componentProps = componentProps;
   }
 }
 
 class App extends Component {
   state = {
+    openRegisterForm: true,
     isLoading: false,
-    initialValues: { username: '', email: '', password: '', repeatedPassword: '', firstName: '', lastName: '' },
+    initialValues: { username: '', email: '', password: 'agniecha', repeatedPassword: '', firstName: '', lastName: '' },
     settings: { 
       username: new InputSettings('Username', { required: true, minLength: 3, maxLength: 25 }, [], true ),
-      email: new InputSettings('Email Adress', { required: true, minLength: 3, maxLength: 25 } ),
+      email: new InputSettings('Email adress', { required: true, minLength: 3, maxLength: 25 } ),
       password: new InputSettings('Password', { required: true, minLength: 3, maxLength: 25 } ),
-      repeatedPassword: new InputSettings('Repeated Password', { required: true, minLength: 3, maxLength: 25 } ),
-      firstName: new InputSettings('First Name', { required: true, minLength: 3, maxLength: 25 } ),
-      lastName: new InputSettings('Last Name', { required: true, minLength: 3, maxLength: 25 } ),
+      repeatedPassword: new InputSettings('Repeated password', { required: true, minLength: 3, maxLength: 25 } ),
+      firstName: new InputSettings('First name', { required: true, minLength: 3, maxLength: 25 } ),
+      lastName: new InputSettings('Last name', { required: true, minLength: 3, maxLength: 25 } ),
     },
     settingsAdvanced: {
       username: new InputSettings('Username', { required: true, minLength: 3, maxLength: 25 }, [], true ),
-      email: new InputSettings('Email Adress', { required: true, minLength: 3, maxLength: 25 } ),
+      email: new InputSettings('Email adress', { required: true, minLength: 3, maxLength: 25 } ),
       password: new InputSettings('Password', { required: true, minLength: 3, maxLength: 25 }, ['agniecha', 'tomasz', 'piotr'], false, 'select'),
-      repeatedPassword: new InputSettings('Repeated Password', { required: true, minLength: 3, maxLength: 25 } ),
-      firstName: new InputSettings('First Name', { required: true, minLength: 3, maxLength: 25 } ),
-      lastName: new InputSettings('Last Name', { required: true, minLength: 3, maxLength: 25 } ),
+      repeatedPassword: new InputSettings('Repeated password', { required: true, minLength: 3, maxLength: 25 } ),
+      firstName: new InputSettings('First name', { required: true, minLength: 3, maxLength: 25 } ),
+      lastName: new InputSettings('Last name', { required: true, minLength: 3, maxLength: 25 } ),
     }
   }
 
@@ -49,11 +51,11 @@ class App extends Component {
   }
 
   render() {
-    const { initialValues, settings, isLoading, settingsAdvanced } = this.state;
+    const { initialValues, settings, isLoading, settingsAdvanced, openRegisterForm } = this.state;
     return (
       <div className="App">
         {/* Fancy form z wykorzystaniem render propa - pozwala na tworzenie w bardziej dynamiczny sposob - uzywac tylko w zlozonych formularzach */}
-         <FancyForm 
+        <FancyForm 
           onSubmit={this.handleSubmit}
           initialValues={initialValues} 
           settings={settings} 
@@ -91,12 +93,22 @@ class App extends Component {
         /> 
         <div style={{marginTop: '100px'}}></div>
         {/* Idealny do formow o srednim zaawansowaniu gdzie nie potrzebna jest zazdna dodatkowa logika */}
-        <FancyForm 
-          key={2}
-          onSubmit={this.handleSubmit}
-          initialValues={initialValues} 
-          settings={settingsAdvanced} 
-        />
+
+        {openRegisterForm && 
+          <React.Fragment>
+            <div className="modal">
+              <div className="lab"/>
+              <h3 className="modal-title">REGISTER</h3>
+              <FancyForm 
+                onSubmit={this.handleSubmit}
+                initialValues={initialValues} 
+                settings={settingsAdvanced} 
+              />
+            </div>
+            <div className="backdrop" onClick={() => this.setState({openRegisterForm: false})}/>
+        </React.Fragment>
+        }
+  
 
         <FancyForm
           key={3}
