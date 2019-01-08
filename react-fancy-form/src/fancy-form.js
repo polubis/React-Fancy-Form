@@ -91,7 +91,7 @@ class FancyForm extends React.PureComponent {
 
     render() {
         const { formKeys, values, errors, isFormInvalid, isFormDirty, settings } = this.state;
-        const { formClass, renderForm, btnClass, btnTitle, renderSubmitBtn } = this.props;
+        const { renderForm, renderSubmitBtn, btnTitle, formClass, inputWrapperClass, labelClass, errorClass, btnClass } = this.props;
         return (
             <React.Fragment>
                 {renderForm ? renderForm(formKeys, values, errors, isFormInvalid, isFormDirty, this.handleChange, this.handleSubmit) :
@@ -102,14 +102,14 @@ class FancyForm extends React.PureComponent {
                         
                         else {
                             return (
-                                <section className="fields-wrapper" key={key}>
-                                    <label className="field-label">{settings[key].label}</label>
+                                <section className={inputWrapperClass} key={key}>
+                                    <label className={labelClass}>{settings[key].label}</label>
 
                                     {this.renderComponent(settings[key], {
                                         value: values[key], onChange: e => this.handleChange(e, key)
                                     })}
 
-                                    <p className="field-error">{errors[key]}</p>
+                                    <p className={errorClass}>{errors[key]}</p>
                                 </section>
                             );
                         }
@@ -131,6 +131,9 @@ class FancyForm extends React.PureComponent {
 
 FancyForm.defaultProps = {
     formClass: 'form',
+    inputWrapperClass: 'fields-wrapper',
+    labelClass: 'field-label',
+    errorClass: 'field-error',
     btnClass: 'label-btn',
     btnTitle: 'submit'
 };

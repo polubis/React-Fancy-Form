@@ -26,7 +26,7 @@ code {
 }
 @media (min-width: 668px) {
   .modal { 
-    width: 500px; 
+    width: 500px;
   }
 }
 .modal-title {

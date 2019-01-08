@@ -95,17 +95,17 @@ class App extends Component {
         {/* Idealny do formow o srednim zaawansowaniu gdzie nie potrzebna jest zazdna dodatkowa logika */}
 
         {openRegisterForm && 
-          <React.Fragment>
-            <div className="modal">
-              <div className="lab"/>
-              <h3 className="modal-title">REGISTER</h3>
-              <FancyForm 
-                onSubmit={this.handleSubmit}
-                initialValues={initialValues} 
-                settings={settingsAdvanced} 
-              />
-            </div>
-            <div className="backdrop" onClick={() => this.setState({openRegisterForm: false})}/>
+        <React.Fragment>
+          <div className="modal">
+            <div className="lab"/>
+            <h3 className="modal-title">REGISTER</h3>
+            <FancyForm 
+              onSubmit={this.handleSubmit}
+              initialValues={initialValues} 
+              settings={settingsAdvanced} 
+            />
+          </div>
+          <div className="backdrop" onClick={() => this.setState({openRegisterForm: false})}/>
         </React.Fragment>
         }
   
